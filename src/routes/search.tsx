@@ -32,6 +32,7 @@ const categories = ["Videos", "Players", "Creators", "Tournaments"];
 function SearchScreen() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState(categories[0]!);
+  const [playingClip, setPlayingClip] = useState<VideoPost | null>(null);
   const q = query.trim().toLowerCase();
 
   // Real clips and real accounts from Firestore — never fabricated rows.
@@ -126,7 +127,7 @@ function SearchScreen() {
                 <VideoTile
                   videoUrl={v.videoUrl}
                   posterUrl={v.posterUrl}
-                  views={v.likes}
+                  
                   onOpen={() => setPlayingClip(v)}
                 />
               </li>
