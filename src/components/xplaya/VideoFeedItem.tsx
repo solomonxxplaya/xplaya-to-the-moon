@@ -12,9 +12,8 @@ import {
   Trash2,
   Pencil,
   Link2,
-  Volume2,
-  VolumeX,
 } from "lucide-react";
+import { playWithSound } from "@/lib/audio-unlock";
 
 import type { VideoPost } from "@/lib/types";
 import { compactNumber } from "@/lib/format";
@@ -74,13 +73,6 @@ function ActionButton({
 }
 
 
-/**
- * Feed-wide sound preference. XPLAYA plays clips WITH their original audio;
- * the flag only flips to muted when the browser refuses unmuted autoplay, and
- * the viewer can turn sound back on from the rail at any time.
- */
-let feedSoundOn = true;
-
 export function VideoFeedItem({
   post,
   onDeleted,
@@ -100,38 +92,16 @@ export function VideoFeedItem({
   const [commentsOpen, setCommentsOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [reportOpen, setReportOpen] = useState(false);
-  const [muted, setMuted] = useState(!feedSoundOn);
   const { liked, likes, comments, shares, toggleLike, setLike, registerShare, registerView } =
     useVideoInteractions({ id: post.id, ownerId: post.creator.id });
   const { following, toggle: toggleFollow, isSelf } = useFollow(post.creator.id);
 
-  /**
-   * Starts playback with the clip's own audio. Browsers only block unmuted
-   * autoplay before the first user gesture — in that case we retry muted and
-   * remember it, so the audio track is never discarded, only deferred.
-   */
+  /** Always starts the clip with its own audio — XPLAYA never mutes on purpose. */
   const startPlayback = async (video: HTMLVideoElement) => {
-    video.muted = !feedSoundOn;
-    try {
-      await video.play();
-      setMuted(video.muted);
-      setPlaying(true);
-    } catch {
-      if (!video.muted) {
-        feedSoundOn = false;
-        video.muted = true;
-        setMuted(true);
-        try {
-          await video.play();
-          setPlaying(true);
-          return;
-        } catch {
-          /* still blocked — leave paused */
-        }
-      }
-      setPlaying(false);
-    }
+    const ok = await playWithSound(video);
+    setPlaying(ok);
   };
+
 
   useEffect(() => {
     const el = containerRef.current;
@@ -155,15 +125,6 @@ export function VideoFeedItem({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registerView]);
 
-  const toggleSound = () => {
-    const video = videoRef.current;
-    if (!video) return;
-    const next = !video.muted;
-    feedSoundOn = next;
-    video.muted = !next;
-    setMuted(!next);
-    if (video.paused) void video.play().then(() => setPlaying(true), () => undefined);
-  };
 
   const toggle = () => {
     const video = videoRef.current;
@@ -237,15 +198,16 @@ export function VideoFeedItem({
       ref={containerRef}
       className="relative h-[100svh] w-full snap-start snap-always overflow-hidden bg-black"
     >
+      {/* 9:16 viewing frame: the whole clip is always visible (letterboxed when
+          it is not vertical) and never cropped, stretched or distorted. */}
       <video
         ref={videoRef}
         src={post.videoUrl}
         poster={post.posterUrl}
-        muted={muted}
         loop
         playsInline
         preload="auto"
-        className="absolute inset-0 h-full w-full object-cover"
+        className="absolute inset-0 h-full w-full bg-black object-contain"
       />
       <button
         onClick={onSurfaceTap}
