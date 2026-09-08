@@ -4,8 +4,10 @@ import { ArrowLeft, Search as SearchIcon, SearchX, Trophy } from "lucide-react";
 import { FilterChips } from "@/components/layout/Screen";
 import { EmptyState } from "@/components/xplaya/EmptyState";
 import { UserRow } from "@/components/xplaya/UserRow";
+import { VideoTile } from "@/components/xplaya/VideoTile";
+import { VideoPlayerDialog } from "@/components/xplaya/VideoPlayerDialog";
 import { useFeed, useUserSearch } from "@/lib/live-data";
-import { compactNumber } from "@/lib/format";
+import type { VideoPost } from "@/lib/types";
 
 export const Route = createFileRoute("/search")({
   head: () => ({

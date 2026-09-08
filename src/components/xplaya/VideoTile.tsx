@@ -49,12 +49,14 @@ export function VideoTile({
           tabIndex={-1}
           className="pointer-events-none aspect-[9/16] w-full bg-black object-contain"
         />
-        <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-1 bg-gradient-to-t from-black/85 to-transparent px-2 pt-6 pb-1.5">
-          <Play className="h-3 w-3 fill-current text-foreground/90" />
-          <span className="text-[11px] font-bold text-foreground/95 tabular-nums">
-            {compactNumber(views ?? 0)}
+        {views !== undefined ? (
+          <span className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-1 bg-gradient-to-t from-black/85 to-transparent px-2 pt-6 pb-1.5">
+            <Play className="h-3 w-3 fill-current text-foreground/90" />
+            <span className="text-[11px] font-bold text-foreground/95 tabular-nums">
+              {compactNumber(views)}
+            </span>
           </span>
-        </span>
+        ) : null}
       </button>
 
       {onDelete ? (
