@@ -19,7 +19,7 @@ import {
 } from "@/lib/firebase/user-service";
 import { getUserVideos } from "@/lib/firebase/content-service";
 import type { UserRole } from "@/lib/firebase/model";
-import { isAdminRole } from "@/lib/firebase/admin-service";
+import { claimPlatformOwner, isAdminRole } from "@/lib/firebase/admin-service";
 
 /**
  * XPLAYA auth + profile context.
