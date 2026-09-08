@@ -148,6 +148,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       setRole(doc.role ?? "user");
+      // The founding account claims its 'owner' role in the database once;
+      // security rules decide whether the claim is allowed. Everyone else's
+      // admin access keeps coming from the role stored on their profile.
+      if (!isAdminRole(doc.role ?? "user")) {
+        void claimPlatformOwner(uid, getFirebaseAuth()?.currentUser?.email ?? null);
+      }
       base = {
         username: doc.username,
         displayName: doc.displayName,
