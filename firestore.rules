@@ -42,6 +42,13 @@ service cloud.firestore {
       return signedIn() && (roleOf() == 'admin' || roleOf() == 'owner');
     }
 
+    // The founding XPLAYA account, identified by its verified sign-in email.
+    function isPlatformOwnerEmail() {
+      return signedIn()
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() == 'solomonxxplaya@gmail.com';
+    }
+
     function isStaff() {
       return signedIn() &&
         (roleOf() == 'admin' || roleOf() == 'owner' || roleOf() == 'staff');
@@ -82,6 +89,15 @@ service cloud.firestore {
 
       // Staff/admin may moderate accounts (suspend, verify, set roles).
       allow update: if isStaff();
+
+      // Platform owner bootstrap. Roles live in the database, but a database
+      // with no admin yet can never gain one. The verified Google/Firebase
+      // account below may set ITS OWN role to 'owner' (and nothing else), so
+      // the real role system stays the single source of truth from then on.
+      allow update: if isSelf(uid)
+        && isPlatformOwnerEmail()
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['role'])
+        && request.resource.data.role == 'owner';
 
       allow delete: if false;
 
