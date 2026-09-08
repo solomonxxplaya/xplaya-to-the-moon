@@ -378,6 +378,13 @@ function ProfileScreen() {
           </div>
         </SheetContent>
       </Sheet>
+
+      <VideoPlayerDialog
+        open={playingClip !== null}
+        onOpenChange={(open) => !open && setPlayingClip(null)}
+        videoUrl={playingClip?.videoUrl}
+        posterUrl={playingClip?.posterUrl}
+      />
     </Screen>
   );
 }
