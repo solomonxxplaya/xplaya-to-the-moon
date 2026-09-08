@@ -10,33 +10,297 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
+import { Route as AdminRouteImport } from './routes/admin'
+import { Route as EditProfileRouteImport } from './routes/edit-profile'
+import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
+import { Route as InboxRouteImport } from './routes/inbox'
+import { Route as InviteRouteImport } from './routes/invite'
+import { Route as LiveRouteImport } from './routes/live'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as MeRouteImport } from './routes/me'
+import { Route as RankRouteImport } from './routes/rank'
+import { Route as SearchRouteImport } from './routes/search'
+import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as ShopRouteImport } from './routes/shop'
+import { Route as SignupRouteImport } from './routes/signup'
+import { Route as SupportRouteImport } from './routes/support'
+import { Route as UploadRouteImport } from './routes/upload'
+import { Route as TournamentIndexRouteImport } from './routes/tournament.index'
+import { Route as TournamentIdRouteImport } from './routes/tournament.$id'
+import { Route as UUsernameRouteImport } from './routes/u.$username'
+import { Route as ApiPublicMediaUploadRouteImport } from './routes/api/public/media.upload'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EditProfileRoute = EditProfileRouteImport.update({
+  id: '/edit-profile',
+  path: '/edit-profile',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ForgotPasswordRoute = ForgotPasswordRouteImport.update({
+  id: '/forgot-password',
+  path: '/forgot-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InboxRoute = InboxRouteImport.update({
+  id: '/inbox',
+  path: '/inbox',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const InviteRoute = InviteRouteImport.update({
+  id: '/invite',
+  path: '/invite',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiveRoute = LiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MeRoute = MeRouteImport.update({
+  id: '/me',
+  path: '/me',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RankRoute = RankRouteImport.update({
+  id: '/rank',
+  path: '/rank',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SearchRoute = SearchRouteImport.update({
+  id: '/search',
+  path: '/search',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SettingsRoute = SettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShopRoute = ShopRouteImport.update({
+  id: '/shop',
+  path: '/shop',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignupRoute = SignupRouteImport.update({
+  id: '/signup',
+  path: '/signup',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SupportRoute = SupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UploadRoute = UploadRouteImport.update({
+  id: '/upload',
+  path: '/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TournamentIndexRoute = TournamentIndexRouteImport.update({
+  id: '/tournament/',
+  path: '/tournament/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TournamentIdRoute = TournamentIdRouteImport.update({
+  id: '/tournament/$id',
+  path: '/tournament/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const UUsernameRoute = UUsernameRouteImport.update({
+  id: '/u/$username',
+  path: '/u/$username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiPublicMediaUploadRoute = ApiPublicMediaUploadRouteImport.update({
+  id: '/api/public/media/upload',
+  path: '/api/public/media/upload',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/edit-profile': typeof EditProfileRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/inbox': typeof InboxRoute
+  '/invite': typeof InviteRoute
+  '/live': typeof LiveRoute
+  '/login': typeof LoginRoute
+  '/me': typeof MeRoute
+  '/rank': typeof RankRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/signup': typeof SignupRoute
+  '/support': typeof SupportRoute
+  '/upload': typeof UploadRoute
+  '/tournament/$id': typeof TournamentIdRoute
+  '/u/$username': typeof UUsernameRoute
+  '/tournament/': typeof TournamentIndexRoute
+  '/api/public/media/upload': typeof ApiPublicMediaUploadRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/edit-profile': typeof EditProfileRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/inbox': typeof InboxRoute
+  '/invite': typeof InviteRoute
+  '/live': typeof LiveRoute
+  '/login': typeof LoginRoute
+  '/me': typeof MeRoute
+  '/rank': typeof RankRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/signup': typeof SignupRoute
+  '/support': typeof SupportRoute
+  '/upload': typeof UploadRoute
+  '/tournament/$id': typeof TournamentIdRoute
+  '/u/$username': typeof UUsernameRoute
+  '/tournament': typeof TournamentIndexRoute
+  '/api/public/media/upload': typeof ApiPublicMediaUploadRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
+  '/admin': typeof AdminRoute
+  '/edit-profile': typeof EditProfileRoute
+  '/forgot-password': typeof ForgotPasswordRoute
+  '/inbox': typeof InboxRoute
+  '/invite': typeof InviteRoute
+  '/live': typeof LiveRoute
+  '/login': typeof LoginRoute
+  '/me': typeof MeRoute
+  '/rank': typeof RankRoute
+  '/search': typeof SearchRoute
+  '/settings': typeof SettingsRoute
+  '/shop': typeof ShopRoute
+  '/signup': typeof SignupRoute
+  '/support': typeof SupportRoute
+  '/upload': typeof UploadRoute
+  '/tournament/$id': typeof TournamentIdRoute
+  '/u/$username': typeof UUsernameRoute
+  '/tournament/': typeof TournamentIndexRoute
+  '/api/public/media/upload': typeof ApiPublicMediaUploadRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/edit-profile'
+    | '/forgot-password'
+    | '/inbox'
+    | '/invite'
+    | '/live'
+    | '/login'
+    | '/me'
+    | '/rank'
+    | '/search'
+    | '/settings'
+    | '/shop'
+    | '/signup'
+    | '/support'
+    | '/upload'
+    | '/tournament/$id'
+    | '/u/$username'
+    | '/tournament/'
+    | '/api/public/media/upload'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/edit-profile'
+    | '/forgot-password'
+    | '/inbox'
+    | '/invite'
+    | '/live'
+    | '/login'
+    | '/me'
+    | '/rank'
+    | '/search'
+    | '/settings'
+    | '/shop'
+    | '/signup'
+    | '/support'
+    | '/upload'
+    | '/tournament/$id'
+    | '/u/$username'
+    | '/tournament'
+    | '/api/public/media/upload'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/edit-profile'
+    | '/forgot-password'
+    | '/inbox'
+    | '/invite'
+    | '/live'
+    | '/login'
+    | '/me'
+    | '/rank'
+    | '/search'
+    | '/settings'
+    | '/shop'
+    | '/signup'
+    | '/support'
+    | '/upload'
+    | '/tournament/$id'
+    | '/u/$username'
+    | '/tournament/'
+    | '/api/public/media/upload'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRoute
+  EditProfileRoute: typeof EditProfileRoute
+  ForgotPasswordRoute: typeof ForgotPasswordRoute
+  InboxRoute: typeof InboxRoute
+  InviteRoute: typeof InviteRoute
+  LiveRoute: typeof LiveRoute
+  LoginRoute: typeof LoginRoute
+  MeRoute: typeof MeRoute
+  RankRoute: typeof RankRoute
+  SearchRoute: typeof SearchRoute
+  SettingsRoute: typeof SettingsRoute
+  ShopRoute: typeof ShopRoute
+  SignupRoute: typeof SignupRoute
+  SupportRoute: typeof SupportRoute
+  UploadRoute: typeof UploadRoute
+  TournamentIdRoute: typeof TournamentIdRoute
+  UUsernameRoute: typeof UUsernameRoute
+  TournamentIndexRoute: typeof TournamentIndexRoute
+  ApiPublicMediaUploadRoute: typeof ApiPublicMediaUploadRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +312,171 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/edit-profile': {
+      id: '/edit-profile'
+      path: '/edit-profile'
+      fullPath: '/edit-profile'
+      preLoaderRoute: typeof EditProfileRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/forgot-password': {
+      id: '/forgot-password'
+      path: '/forgot-password'
+      fullPath: '/forgot-password'
+      preLoaderRoute: typeof ForgotPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/inbox': {
+      id: '/inbox'
+      path: '/inbox'
+      fullPath: '/inbox'
+      preLoaderRoute: typeof InboxRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/invite': {
+      id: '/invite'
+      path: '/invite'
+      fullPath: '/invite'
+      preLoaderRoute: typeof InviteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/live': {
+      id: '/live'
+      path: '/live'
+      fullPath: '/live'
+      preLoaderRoute: typeof LiveRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/me': {
+      id: '/me'
+      path: '/me'
+      fullPath: '/me'
+      preLoaderRoute: typeof MeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rank': {
+      id: '/rank'
+      path: '/rank'
+      fullPath: '/rank'
+      preLoaderRoute: typeof RankRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/search': {
+      id: '/search'
+      path: '/search'
+      fullPath: '/search'
+      preLoaderRoute: typeof SearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/settings': {
+      id: '/settings'
+      path: '/settings'
+      fullPath: '/settings'
+      preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shop': {
+      id: '/shop'
+      path: '/shop'
+      fullPath: '/shop'
+      preLoaderRoute: typeof ShopRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/signup': {
+      id: '/signup'
+      path: '/signup'
+      fullPath: '/signup'
+      preLoaderRoute: typeof SignupRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/support': {
+      id: '/support'
+      path: '/support'
+      fullPath: '/support'
+      preLoaderRoute: typeof SupportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/upload': {
+      id: '/upload'
+      path: '/upload'
+      fullPath: '/upload'
+      preLoaderRoute: typeof UploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tournament/': {
+      id: '/tournament/'
+      path: '/tournament'
+      fullPath: '/tournament/'
+      preLoaderRoute: typeof TournamentIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tournament/$id': {
+      id: '/tournament/$id'
+      path: '/tournament/$id'
+      fullPath: '/tournament/$id'
+      preLoaderRoute: typeof TournamentIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/u/$username': {
+      id: '/u/$username'
+      path: '/u/$username'
+      fullPath: '/u/$username'
+      preLoaderRoute: typeof UUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/public/media/upload': {
+      id: '/api/public/media/upload'
+      path: '/api/public/media/upload'
+      fullPath: '/api/public/media/upload'
+      preLoaderRoute: typeof ApiPublicMediaUploadRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
+  AdminRoute: AdminRoute,
+  EditProfileRoute: EditProfileRoute,
+  ForgotPasswordRoute: ForgotPasswordRoute,
+  InboxRoute: InboxRoute,
+  InviteRoute: InviteRoute,
+  LiveRoute: LiveRoute,
+  LoginRoute: LoginRoute,
+  MeRoute: MeRoute,
+  RankRoute: RankRoute,
+  SearchRoute: SearchRoute,
+  SettingsRoute: SettingsRoute,
+  ShopRoute: ShopRoute,
+  SignupRoute: SignupRoute,
+  SupportRoute: SupportRoute,
+  UploadRoute: UploadRoute,
+  TournamentIdRoute: TournamentIdRoute,
+  UUsernameRoute: UUsernameRoute,
+  TournamentIndexRoute: TournamentIndexRoute,
+  ApiPublicMediaUploadRoute: ApiPublicMediaUploadRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
