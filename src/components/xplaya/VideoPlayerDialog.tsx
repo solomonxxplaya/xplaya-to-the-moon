@@ -16,9 +16,9 @@ export function VideoPlayerDialog({
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  videoUrl?: string;
-  posterUrl?: string;
-  caption?: string;
+  videoUrl?: string | undefined;
+  posterUrl?: string | undefined;
+  caption?: string | undefined;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
 

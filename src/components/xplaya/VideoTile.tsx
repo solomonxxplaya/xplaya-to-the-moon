@@ -23,12 +23,12 @@ export function VideoTile({
   onDelete,
   deleting,
 }: {
-  videoUrl?: string;
-  posterUrl?: string;
-  views?: number;
+  videoUrl?: string | undefined;
+  posterUrl?: string | undefined;
+  views?: number | undefined;
   onOpen: () => void;
-  onDelete?: () => void;
-  deleting?: boolean;
+  onDelete?: (() => void) | undefined;
+  deleting?: boolean | undefined;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -72,7 +72,7 @@ export function VideoTile({
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-44 rounded-2xl border-border bg-surface">
             <DropdownMenuItem
-              disabled={deleting}
+              disabled={Boolean(deleting)}
               className="text-destructive focus:text-destructive"
               onSelect={(event) => {
                 event.preventDefault();
