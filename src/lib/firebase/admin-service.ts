@@ -24,6 +24,28 @@ export const ADMIN_ROLES: UserRole[] = ["admin", "owner"];
 export const isAdminRole = (role?: UserRole | null) =>
   Boolean(role && ADMIN_ROLES.includes(role));
 
+/** Founding XPLAYA account — the only email allowed to bootstrap a role. */
+export const PLATFORM_OWNER_EMAIL = "solomonxxplaya@gmail.com";
+
+/**
+ * One-time bootstrap: a brand-new database contains no admin, so no admin can
+ * ever promote anyone. The founding account writes its own `owner` role to its
+ * profile; Firestore security rules verify the signed-in email, so this is not
+ * a client-side trick. Every other admin is granted from the Admin Panel and
+ * read back from the database role field.
+ */
+export async function claimPlatformOwner(uid: string, email?: string | null) {
+  if (!uid || email?.toLowerCase() !== PLATFORM_OWNER_EMAIL) return false;
+  const db = getDb();
+  if (!db) return false;
+  try {
+    await updateDoc(doc(db, "users", uid), { role: "owner" satisfies UserRole });
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export async function listUsers(max = 50): Promise<PublicProfileDoc[]> {
   const db = getDb();
   if (!db) return [];

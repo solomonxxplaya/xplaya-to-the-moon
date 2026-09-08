@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Settings, Grid3x3, Bookmark, Heart, Pencil, Share2, ChevronRight, UserRound, Trash2, Play } from "lucide-react";
+import { Settings, Grid3x3, Bookmark, Heart, Pencil, Share2, ChevronRight, UserRound } from "lucide-react";
+import { VideoTile } from "@/components/xplaya/VideoTile";
+import { VideoPlayerDialog } from "@/components/xplaya/VideoPlayerDialog";
+import type { VideoDoc } from "@/lib/firebase/model";
 import { Screen } from "@/components/layout/Screen";
 import { RankBadge, RankCrest } from "@/components/xplaya/RankBadge";
 import { nextRank, formatRank } from "@/lib/ranks";
@@ -52,6 +55,8 @@ function ProfileScreen() {
   const { data: videos } = useUserVideos(uid);
   const [removed, setRemoved] = useState<string[]>([]);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [playingClip, setPlayingClip] = useState<VideoDoc | null>(null);
+  const setPlaying = setPlayingClip;
 
   const removeClip = async (video: { id: string; videoUrl?: string; posterUrl?: string }) => {
     if (!uid || deleting) return;
@@ -312,31 +317,15 @@ function ProfileScreen() {
           ) : (
             <div className="grid grid-cols-3 gap-1.5">
               {ownVideos.map((v) => (
-                <div key={v.id} className="group relative overflow-hidden rounded-xl bg-surface-2">
-                  <img
-                    src={v.posterUrl}
-                    alt={v.caption}
-                    loading="lazy"
-                    className="aspect-[9/16] w-full object-cover"
-                  />
-                  <button
-                    type="button"
-                    aria-label="Delete clip"
-                    disabled={deleting === v.id}
-                    onClick={() => void removeClip(v)}
-                    className="press absolute top-1.5 right-1.5 grid h-7 w-7 place-items-center rounded-full bg-black/70 text-destructive disabled:opacity-50"
-                  >
-                    <Trash2 className="h-3.5 w-3.5" />
-                  </button>
-                  {/* Real total views for this clip, TikTok-style under the video */}
-                  <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center gap-1 bg-gradient-to-t from-black/85 to-transparent px-2 pt-6 pb-1.5">
-                    <Play className="h-3 w-3 fill-current text-foreground/90" />
-                    <span className="text-[11px] font-bold text-foreground/95 tabular-nums">
-                      {compactNumber(viewCounts[v.id] ?? 0)}
-                    </span>
-                  </div>
-                </div>
-
+                <VideoTile
+                  key={v.id}
+                  videoUrl={v.videoUrl}
+                  posterUrl={v.posterUrl}
+                  views={viewCounts[v.id] ?? 0}
+                  deleting={deleting === v.id}
+                  onOpen={() => setPlaying(v)}
+                  onDelete={() => void removeClip(v)}
+                />
               ))}
             </div>
           )}
@@ -389,6 +378,13 @@ function ProfileScreen() {
           </div>
         </SheetContent>
       </Sheet>
+
+      <VideoPlayerDialog
+        open={playingClip !== null}
+        onOpenChange={(open) => !open && setPlayingClip(null)}
+        videoUrl={playingClip?.videoUrl}
+        posterUrl={playingClip?.posterUrl}
+      />
     </Screen>
   );
 }

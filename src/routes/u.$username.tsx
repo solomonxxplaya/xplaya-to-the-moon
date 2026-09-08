@@ -5,15 +5,14 @@ import { RankBadge, RankCrest } from "@/components/xplaya/RankBadge";
 import { formatRank } from "@/lib/ranks";
 import { compactNumber } from "@/lib/format";
 import { EmptyState } from "@/components/xplaya/EmptyState";
-import { UserRow } from "@/components/xplaya/UserRow";
-import { useFollow, useProfileCounts } from "@/lib/social";
-import { useConnections } from "@/lib/connections";
+import { VideoTile } from "@/components/xplaya/VideoTile";
+import { VideoPlayerDialog } from "@/components/xplaya/VideoPlayerDialog";
+import { useFollow, useProfileCounts, useVideoViewCounts } from "@/lib/social";
 import { useUserVideos } from "@/lib/live-data";
 import { initFirebase } from "@/lib/firebase/config";
 import { getProfileByUsername } from "@/lib/firebase/user-service";
-import type { PublicProfileDoc } from "@/lib/firebase/model";
+import type { PublicProfileDoc, VideoDoc } from "@/lib/firebase/model";
 import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/u/$username")({
   head: ({ params }) => ({
@@ -75,9 +74,10 @@ function PublicProfileScreen() {
   const { following, busy, toggle, isSelf } = useFollow(uid);
   const [refreshKey, setRefreshKey] = useState(0);
   const counts = useProfileCounts(uid, refreshKey);
+  // Only this player's own uploads — the query is scoped to their uid.
   const { data: videos } = useUserVideos(uid);
-  const followers = useConnections(uid, "followers", refreshKey);
-  const followingList = useConnections(uid, "following", refreshKey);
+  const viewCounts = useVideoViewCounts(videos.map((v) => v.id));
+  const [playingClip, setPlayingClip] = useState<VideoDoc | null>(null);
 
   const onToggleFollow = async () => {
     await toggle();
@@ -182,46 +182,36 @@ function PublicProfileScreen() {
             </div>
           </div>
 
-          <Tabs defaultValue="followers" className="mt-4">
-            <TabsList className="w-full rounded-full bg-surface p-1">
-              <TabsTrigger value="followers" className="h-10 flex-1 rounded-full text-xs font-bold">
-                Followers
-              </TabsTrigger>
-              <TabsTrigger value="following" className="h-10 flex-1 rounded-full text-xs font-bold">
-                Following
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="followers" className="mt-3">
-              {followers.loading ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">Loading…</p>
-              ) : followers.data.length === 0 ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">
-                  No followers yet.
-                </p>
-              ) : (
-                <ul className="space-y-2">
-                  {followers.data.map((u) => (
-                    <UserRow key={u.id} user={u} />
-                  ))}
-                </ul>
-              )}
-            </TabsContent>
-            <TabsContent value="following" className="mt-3">
-              {followingList.loading ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">Loading…</p>
-              ) : followingList.data.length === 0 ? (
-                <p className="py-8 text-center text-sm text-muted-foreground">
-                  Not following anyone yet.
-                </p>
-              ) : (
-                <ul className="space-y-2">
-                  {followingList.data.map((u) => (
-                    <UserRow key={u.id} user={u} />
-                  ))}
-                </ul>
-              )}
-            </TabsContent>
-          </Tabs>
+          {/* This player's own clips, newest first. Tap any tile to watch. */}
+          <div className="mt-4">
+            <p className="text-[10px] font-bold tracking-[0.2em] text-muted-foreground uppercase">
+              Clips
+            </p>
+            {videos.length === 0 ? (
+              <p className="py-8 text-center text-sm text-muted-foreground">
+                @{profile.username} hasn't posted any clips yet.
+              </p>
+            ) : (
+              <div className="mt-3 grid grid-cols-3 gap-1.5">
+                {videos.map((v) => (
+                  <VideoTile
+                    key={v.id}
+                    videoUrl={v.videoUrl}
+                    posterUrl={v.posterUrl}
+                    views={viewCounts[v.id] ?? 0}
+                    onOpen={() => setPlayingClip(v)}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
+
+          <VideoPlayerDialog
+            open={playingClip !== null}
+            onOpenChange={(open) => !open && setPlayingClip(null)}
+            videoUrl={playingClip?.videoUrl}
+            posterUrl={playingClip?.posterUrl}
+          />
         </>
       )}
     </div>

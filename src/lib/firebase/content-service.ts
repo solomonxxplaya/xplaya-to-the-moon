@@ -38,13 +38,29 @@ export async function createVideo(
   return ref.id;
 }
 
+const createdAtMillis = (value: unknown) => {
+  const ts = value as { toMillis?: () => number; seconds?: number } | null | undefined;
+  if (typeof ts?.toMillis === "function") return ts.toMillis();
+  if (typeof ts?.seconds === "number") return ts.seconds * 1000;
+  return 0;
+};
+
+/**
+ * Every clip owned by ONE user, newest first.
+ *
+ * The equality filter alone needs no composite index; ordering is applied
+ * locally so the list is always in posting order even before the index exists.
+ */
 export async function getUserVideos(ownerId: string, max = 60) {
   const db = getDb();
-  if (!db) return [];
+  if (!db || !ownerId) return [];
   const snap = await getDocs(
     query(collection(db, "videos"), where("ownerId", "==", ownerId), fbLimit(max)),
   );
-  return snap.docs.map((d) => ({ ...(d.data() as VideoDoc), id: d.id }));
+  return snap.docs
+    .map((d) => ({ ...(d.data() as VideoDoc), id: d.id }))
+    .filter((v) => v.ownerId === ownerId)
+    .sort((a, b) => createdAtMillis(b.createdAt) - createdAtMillis(a.createdAt));
 }
 
 /** Only the uploader (or an admin, per rules) may delete. */

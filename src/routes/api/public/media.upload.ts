@@ -24,6 +24,37 @@ import {
 
 const kinds = new Set(["videos", "posters", "avatars", "media"]);
 
+/**
+ * R2 stores whatever content type we send, and the browser trusts it when the
+ * file is played back. Some phones upload clips as `application/octet-stream`
+ * or with a vague type, and a wrong type makes the browser decode the file
+ * with the wrong demuxer — the picture shows but the audio track is dropped.
+ * We therefore derive a correct media type from the file extension. The bytes
+ * themselves are stored untouched: no re-encoding, no audio removal, ever.
+ */
+const TYPE_BY_EXTENSION: Record<string, string> = {
+  mp4: "video/mp4",
+  m4v: "video/mp4",
+  mov: "video/mp4",
+  qt: "video/mp4",
+  webm: "video/webm",
+  ogv: "video/ogg",
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  gif: "image/gif",
+};
+
+function resolveContentType(filename: string, declared: string, kind: string) {
+  const ext = (decodeURIComponent(filename).split(".").pop() ?? "").toLowerCase();
+  const byExt = TYPE_BY_EXTENSION[ext];
+  if (byExt) return byExt;
+  if (declared === "video/quicktime") return "video/mp4";
+  if (declared && declared !== "application/octet-stream") return declared;
+  return kind === "videos" ? "video/mp4" : "application/octet-stream";
+}
+
 export const Route = createFileRoute("/api/public/media/upload")({
   server: {
     handlers: {
@@ -76,7 +107,7 @@ export const Route = createFileRoute("/api/public/media/upload")({
           }
 
           const key = buildMediaKey(uid, kind, filename);
-          await putObject(env, key, body, contentType);
+          await putObject(env, key, body, resolveContentType(filename, contentType, kind));
           return Response.json({ key, url: publicUrlFor(env, key) });
         } catch (error) {
           const message = error instanceof Error ? error.message : "Upload failed.";

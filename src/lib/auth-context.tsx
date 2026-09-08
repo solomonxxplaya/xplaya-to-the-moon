@@ -19,7 +19,7 @@ import {
 } from "@/lib/firebase/user-service";
 import { getUserVideos } from "@/lib/firebase/content-service";
 import type { UserRole } from "@/lib/firebase/model";
-import { isAdminRole } from "@/lib/firebase/admin-service";
+import { claimPlatformOwner, isAdminRole } from "@/lib/firebase/admin-service";
 
 /**
  * XPLAYA auth + profile context.
@@ -148,6 +148,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return;
       }
       setRole(doc.role ?? "user");
+      // The founding account claims its 'owner' role in the database once;
+      // security rules decide whether the claim is allowed. Everyone else's
+      // admin access keeps coming from the role stored on their profile.
+      if (!isAdminRole(doc.role ?? "user")) {
+        void claimPlatformOwner(uid, getFirebaseAuth()?.currentUser?.email ?? null);
+      }
       base = {
         username: doc.username,
         displayName: doc.displayName,
