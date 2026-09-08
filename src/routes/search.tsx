@@ -120,29 +120,23 @@ function SearchScreen() {
         ) : (
           <ul className="grid grid-cols-3 gap-1.5">
             {videos.map((v) => (
-              <li key={v.id} className="relative overflow-hidden rounded-xl bg-surface-2">
-                {v.posterUrl ? (
-                  <img
-                    src={v.posterUrl}
-                    alt={v.caption}
-                    loading="lazy"
-                    className="aspect-[9/16] w-full object-cover"
-                  />
-                ) : (
-                  <div className="aspect-[9/16] w-full" />
-                )}
-                <span className="absolute inset-x-1 bottom-1">
-                  <span className="block truncate text-[10px] font-semibold">
-                    @{v.creator.username}
-                  </span>
-                  <span className="block truncate text-[10px] text-foreground/70">
-                    {compactNumber(v.likes)} likes
-                  </span>
-                </span>
+              <li key={v.id}>
+                <VideoTile
+                  videoUrl={v.videoUrl}
+                  posterUrl={v.posterUrl}
+                  views={v.likes}
+                  onOpen={() => setPlayingClip(v)}
+                />
               </li>
             ))}
           </ul>
         )}
+        <VideoPlayerDialog
+          open={playingClip !== null}
+          onOpenChange={(open) => !open && setPlayingClip(null)}
+          videoUrl={playingClip?.videoUrl}
+          posterUrl={playingClip?.posterUrl}
+        />
       </div>
     </div>
   );

@@ -5,15 +5,14 @@ import { RankBadge, RankCrest } from "@/components/xplaya/RankBadge";
 import { formatRank } from "@/lib/ranks";
 import { compactNumber } from "@/lib/format";
 import { EmptyState } from "@/components/xplaya/EmptyState";
-import { UserRow } from "@/components/xplaya/UserRow";
-import { useFollow, useProfileCounts } from "@/lib/social";
-import { useConnections } from "@/lib/connections";
+import { VideoTile } from "@/components/xplaya/VideoTile";
+import { VideoPlayerDialog } from "@/components/xplaya/VideoPlayerDialog";
+import { useFollow, useProfileCounts, useVideoViewCounts } from "@/lib/social";
 import { useUserVideos } from "@/lib/live-data";
 import { initFirebase } from "@/lib/firebase/config";
 import { getProfileByUsername } from "@/lib/firebase/user-service";
-import type { PublicProfileDoc } from "@/lib/firebase/model";
+import type { PublicProfileDoc, VideoDoc } from "@/lib/firebase/model";
 import { cn } from "@/lib/utils";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 export const Route = createFileRoute("/u/$username")({
   head: ({ params }) => ({
@@ -75,9 +74,10 @@ function PublicProfileScreen() {
   const { following, busy, toggle, isSelf } = useFollow(uid);
   const [refreshKey, setRefreshKey] = useState(0);
   const counts = useProfileCounts(uid, refreshKey);
+  // Only this player's own uploads — the query is scoped to their uid.
   const { data: videos } = useUserVideos(uid);
-  const followers = useConnections(uid, "followers", refreshKey);
-  const followingList = useConnections(uid, "following", refreshKey);
+  const viewCounts = useVideoViewCounts(videos.map((v) => v.id));
+  const [playingClip, setPlayingClip] = useState<VideoDoc | null>(null);
 
   const onToggleFollow = async () => {
     await toggle();
