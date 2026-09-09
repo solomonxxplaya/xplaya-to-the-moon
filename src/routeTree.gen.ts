@@ -26,6 +26,7 @@ import { Route as ShopRouteImport } from './routes/shop'
 import { Route as SignupRouteImport } from './routes/signup'
 import { Route as SupportRouteImport } from './routes/support'
 import { Route as UploadRouteImport } from './routes/upload'
+import { Route as MatchIdRouteImport } from './routes/match.$id'
 import { Route as TournamentIndexRouteImport } from './routes/tournament.index'
 import { Route as TournamentIdRouteImport } from './routes/tournament.$id'
 import { Route as TournamentFindMatchRouteImport } from './routes/tournament.find-match'
@@ -119,6 +120,11 @@ const UploadRoute = UploadRouteImport.update({
   path: '/upload',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MatchIdRoute = MatchIdRouteImport.update({
+  id: '/match/$id',
+  path: '/match/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TournamentIndexRoute = TournamentIndexRouteImport.update({
   id: '/tournament/',
   path: '/tournament/',
@@ -173,6 +179,7 @@ export interface FileRoutesByFullPath {
   '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/upload': typeof UploadRoute
+  '/match/$id': typeof MatchIdRoute
   '/tournament/$id': typeof TournamentIdRoute
   '/tournament/find-match': typeof TournamentFindMatchRoute
   '/tournament/my': typeof TournamentMyRoute
@@ -199,6 +206,7 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/upload': typeof UploadRoute
+  '/match/$id': typeof MatchIdRoute
   '/tournament/$id': typeof TournamentIdRoute
   '/tournament/find-match': typeof TournamentFindMatchRoute
   '/tournament/my': typeof TournamentMyRoute
@@ -226,6 +234,7 @@ export interface FileRoutesById {
   '/signup': typeof SignupRoute
   '/support': typeof SupportRoute
   '/upload': typeof UploadRoute
+  '/match/$id': typeof MatchIdRoute
   '/tournament/$id': typeof TournamentIdRoute
   '/tournament/find-match': typeof TournamentFindMatchRoute
   '/tournament/my': typeof TournamentMyRoute
@@ -254,6 +263,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/support'
     | '/upload'
+    | '/match/$id'
     | '/tournament/$id'
     | '/tournament/find-match'
     | '/tournament/my'
@@ -280,6 +290,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/support'
     | '/upload'
+    | '/match/$id'
     | '/tournament/$id'
     | '/tournament/find-match'
     | '/tournament/my'
@@ -306,6 +317,7 @@ export interface FileRouteTypes {
     | '/signup'
     | '/support'
     | '/upload'
+    | '/match/$id'
     | '/tournament/$id'
     | '/tournament/find-match'
     | '/tournament/my'
@@ -333,6 +345,7 @@ export interface RootRouteChildren {
   SignupRoute: typeof SignupRoute
   SupportRoute: typeof SupportRoute
   UploadRoute: typeof UploadRoute
+  MatchIdRoute: typeof MatchIdRoute
   TournamentIdRoute: typeof TournamentIdRoute
   TournamentFindMatchRoute: typeof TournamentFindMatchRoute
   TournamentMyRoute: typeof TournamentMyRoute
@@ -463,6 +476,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof UploadRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/match/$id': {
+      id: '/match/$id'
+      path: '/match/$id'
+      fullPath: '/match/$id'
+      preLoaderRoute: typeof MatchIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/tournament/': {
       id: '/tournament/'
       path: '/tournament'
@@ -533,6 +553,7 @@ const rootRouteChildren: RootRouteChildren = {
   SignupRoute: SignupRoute,
   SupportRoute: SupportRoute,
   UploadRoute: UploadRoute,
+  MatchIdRoute: MatchIdRoute,
   TournamentIdRoute: TournamentIdRoute,
   TournamentFindMatchRoute: TournamentFindMatchRoute,
   TournamentMyRoute: TournamentMyRoute,
