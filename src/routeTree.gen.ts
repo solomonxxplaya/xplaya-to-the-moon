@@ -28,6 +28,9 @@ import { Route as SupportRouteImport } from './routes/support'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as TournamentIndexRouteImport } from './routes/tournament.index'
 import { Route as TournamentIdRouteImport } from './routes/tournament.$id'
+import { Route as TournamentFindMatchRouteImport } from './routes/tournament.find-match'
+import { Route as TournamentMyRouteImport } from './routes/tournament.my'
+import { Route as TournamentOfficialRouteImport } from './routes/tournament.official'
 import { Route as UUsernameRouteImport } from './routes/u.$username'
 import { Route as ApiPublicMediaUploadRouteImport } from './routes/api/public/media.upload'
 
@@ -126,6 +129,21 @@ const TournamentIdRoute = TournamentIdRouteImport.update({
   path: '/tournament/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const TournamentFindMatchRoute = TournamentFindMatchRouteImport.update({
+  id: '/tournament/find-match',
+  path: '/tournament/find-match',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TournamentMyRoute = TournamentMyRouteImport.update({
+  id: '/tournament/my',
+  path: '/tournament/my',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TournamentOfficialRoute = TournamentOfficialRouteImport.update({
+  id: '/tournament/official',
+  path: '/tournament/official',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const UUsernameRoute = UUsernameRouteImport.update({
   id: '/u/$username',
   path: '/u/$username',
@@ -156,6 +174,9 @@ export interface FileRoutesByFullPath {
   '/support': typeof SupportRoute
   '/upload': typeof UploadRoute
   '/tournament/$id': typeof TournamentIdRoute
+  '/tournament/find-match': typeof TournamentFindMatchRoute
+  '/tournament/my': typeof TournamentMyRoute
+  '/tournament/official': typeof TournamentOfficialRoute
   '/u/$username': typeof UUsernameRoute
   '/tournament/': typeof TournamentIndexRoute
   '/api/public/media/upload': typeof ApiPublicMediaUploadRoute
@@ -179,6 +200,9 @@ export interface FileRoutesByTo {
   '/support': typeof SupportRoute
   '/upload': typeof UploadRoute
   '/tournament/$id': typeof TournamentIdRoute
+  '/tournament/find-match': typeof TournamentFindMatchRoute
+  '/tournament/my': typeof TournamentMyRoute
+  '/tournament/official': typeof TournamentOfficialRoute
   '/u/$username': typeof UUsernameRoute
   '/tournament': typeof TournamentIndexRoute
   '/api/public/media/upload': typeof ApiPublicMediaUploadRoute
@@ -203,6 +227,9 @@ export interface FileRoutesById {
   '/support': typeof SupportRoute
   '/upload': typeof UploadRoute
   '/tournament/$id': typeof TournamentIdRoute
+  '/tournament/find-match': typeof TournamentFindMatchRoute
+  '/tournament/my': typeof TournamentMyRoute
+  '/tournament/official': typeof TournamentOfficialRoute
   '/u/$username': typeof UUsernameRoute
   '/tournament/': typeof TournamentIndexRoute
   '/api/public/media/upload': typeof ApiPublicMediaUploadRoute
@@ -228,6 +255,9 @@ export interface FileRouteTypes {
     | '/support'
     | '/upload'
     | '/tournament/$id'
+    | '/tournament/find-match'
+    | '/tournament/my'
+    | '/tournament/official'
     | '/u/$username'
     | '/tournament/'
     | '/api/public/media/upload'
@@ -251,6 +281,9 @@ export interface FileRouteTypes {
     | '/support'
     | '/upload'
     | '/tournament/$id'
+    | '/tournament/find-match'
+    | '/tournament/my'
+    | '/tournament/official'
     | '/u/$username'
     | '/tournament'
     | '/api/public/media/upload'
@@ -274,6 +307,9 @@ export interface FileRouteTypes {
     | '/support'
     | '/upload'
     | '/tournament/$id'
+    | '/tournament/find-match'
+    | '/tournament/my'
+    | '/tournament/official'
     | '/u/$username'
     | '/tournament/'
     | '/api/public/media/upload'
@@ -298,6 +334,9 @@ export interface RootRouteChildren {
   SupportRoute: typeof SupportRoute
   UploadRoute: typeof UploadRoute
   TournamentIdRoute: typeof TournamentIdRoute
+  TournamentFindMatchRoute: typeof TournamentFindMatchRoute
+  TournamentMyRoute: typeof TournamentMyRoute
+  TournamentOfficialRoute: typeof TournamentOfficialRoute
   UUsernameRoute: typeof UUsernameRoute
   TournamentIndexRoute: typeof TournamentIndexRoute
   ApiPublicMediaUploadRoute: typeof ApiPublicMediaUploadRoute
@@ -438,6 +477,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof TournamentIdRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/tournament/find-match': {
+      id: '/tournament/find-match'
+      path: '/tournament/find-match'
+      fullPath: '/tournament/find-match'
+      preLoaderRoute: typeof TournamentFindMatchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tournament/my': {
+      id: '/tournament/my'
+      path: '/tournament/my'
+      fullPath: '/tournament/my'
+      preLoaderRoute: typeof TournamentMyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/tournament/official': {
+      id: '/tournament/official'
+      path: '/tournament/official'
+      fullPath: '/tournament/official'
+      preLoaderRoute: typeof TournamentOfficialRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/u/$username': {
       id: '/u/$username'
       path: '/u/$username'
@@ -474,6 +534,9 @@ const rootRouteChildren: RootRouteChildren = {
   SupportRoute: SupportRoute,
   UploadRoute: UploadRoute,
   TournamentIdRoute: TournamentIdRoute,
+  TournamentFindMatchRoute: TournamentFindMatchRoute,
+  TournamentMyRoute: TournamentMyRoute,
+  TournamentOfficialRoute: TournamentOfficialRoute,
   UUsernameRoute: UUsernameRoute,
   TournamentIndexRoute: TournamentIndexRoute,
   ApiPublicMediaUploadRoute: ApiPublicMediaUploadRoute,
