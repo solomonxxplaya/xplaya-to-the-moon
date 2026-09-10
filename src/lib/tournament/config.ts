@@ -139,6 +139,10 @@ export type CompetitiveRole =
 /** Only these profile roles may create or manage official tournaments. */
 export const officialTournamentRoles = ["owner", "admin", "moderator"] as const;
 
+/** True when the profile role may moderate/manage tournaments and matches. */
+export const isTournamentStaff = (role: string | null | undefined): boolean =>
+  Boolean(role && (officialTournamentRoles as readonly string[]).includes(role));
+
 /* -------------------------------- placeholders ------------------------------ */
 
 /** Payments are not connected yet — these are the only allowed placeholders. */
