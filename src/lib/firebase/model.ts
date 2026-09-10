@@ -85,7 +85,7 @@ export interface VideoDoc {
 export interface ReportDoc {
   id: string;
   reporterId: string;
-  targetType: "video" | "comment" | "user";
+  targetType: "video" | "comment" | "user" | "conversation" | "group" | "message";
   targetId: string;
   reason: string;
   status: "open" | "reviewing" | "resolved";
