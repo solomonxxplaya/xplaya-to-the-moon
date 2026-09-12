@@ -186,7 +186,7 @@ function ConversationRow({
         <span className="flex shrink-0 flex-col items-end gap-1">
           {conversation.lastMessageAt ? (
             <span className="text-[10px] text-muted-foreground">
-              {timeAgo(new Date(conversation.lastMessageAt).toISOString())}
+              {timeAgo(conversation.lastMessageAt)}
             </span>
           ) : null}
           {unread > 0 ? (

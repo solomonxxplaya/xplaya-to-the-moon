@@ -92,13 +92,13 @@ function FindMatch() {
       },
     };
 
-  const current = choices[step];
+  const current = choices[step] ?? choices[0]!;
   const currentLabel = step === 0 ? (cfg?.name ?? null) : current.value;
   const complete = game && mode && format && rule && level;
 
   const submit = async () => {
     if (!uid) {
-      requireAuth?.();
+      requireAuth("find a match");
       return;
     }
     if (!complete) return;
