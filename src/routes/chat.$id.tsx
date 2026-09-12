@@ -7,14 +7,13 @@ import { useAuth } from "@/lib/auth-context";
 import {
   canDo,
   isMember as isMemberOf,
-  otherMemberId as pickOther,
-  type ConversationDoc,
 } from "@/lib/messaging/model";
 import {
   deleteMessage,
   hideConversation,
   markConversationRead,
   reportConversation,
+  otherMemberId as pickOther,
   sendMessage,
   setMuted,
   useAction,
@@ -269,5 +268,3 @@ function Shell({ title, children }: { title: string; children: React.ReactNode }
     </div>
   );
 }
-
-export type { ConversationDoc };

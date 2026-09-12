@@ -28,6 +28,7 @@ import { Route as SupportRouteImport } from './routes/support'
 import { Route as UploadRouteImport } from './routes/upload'
 import { Route as ChatIdRouteImport } from './routes/chat.$id'
 import { Route as ChatNewRouteImport } from './routes/chat.new'
+import { Route as GroupIdRouteImport } from './routes/group.$id'
 import { Route as GroupNewRouteImport } from './routes/group.new'
 import { Route as MatchIdRouteImport } from './routes/match.$id'
 import { Route as TournamentIndexRouteImport } from './routes/tournament.index'
@@ -133,6 +134,11 @@ const ChatNewRoute = ChatNewRouteImport.update({
   path: '/chat/new',
   getParentRoute: () => rootRouteImport,
 } as any)
+const GroupIdRoute = GroupIdRouteImport.update({
+  id: '/group/$id',
+  path: '/group/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const GroupNewRoute = GroupNewRouteImport.update({
   id: '/group/new',
   path: '/group/new',
@@ -199,6 +205,7 @@ export interface FileRoutesByFullPath {
   '/upload': typeof UploadRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/new': typeof ChatNewRoute
+  '/group/$id': typeof GroupIdRoute
   '/group/new': typeof GroupNewRoute
   '/match/$id': typeof MatchIdRoute
   '/tournament/$id': typeof TournamentIdRoute
@@ -229,6 +236,7 @@ export interface FileRoutesByTo {
   '/upload': typeof UploadRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/new': typeof ChatNewRoute
+  '/group/$id': typeof GroupIdRoute
   '/group/new': typeof GroupNewRoute
   '/match/$id': typeof MatchIdRoute
   '/tournament/$id': typeof TournamentIdRoute
@@ -260,6 +268,7 @@ export interface FileRoutesById {
   '/upload': typeof UploadRoute
   '/chat/$id': typeof ChatIdRoute
   '/chat/new': typeof ChatNewRoute
+  '/group/$id': typeof GroupIdRoute
   '/group/new': typeof GroupNewRoute
   '/match/$id': typeof MatchIdRoute
   '/tournament/$id': typeof TournamentIdRoute
@@ -292,6 +301,7 @@ export interface FileRouteTypes {
     | '/upload'
     | '/chat/$id'
     | '/chat/new'
+    | '/group/$id'
     | '/group/new'
     | '/match/$id'
     | '/tournament/$id'
@@ -322,6 +332,7 @@ export interface FileRouteTypes {
     | '/upload'
     | '/chat/$id'
     | '/chat/new'
+    | '/group/$id'
     | '/group/new'
     | '/match/$id'
     | '/tournament/$id'
@@ -352,6 +363,7 @@ export interface FileRouteTypes {
     | '/upload'
     | '/chat/$id'
     | '/chat/new'
+    | '/group/$id'
     | '/group/new'
     | '/match/$id'
     | '/tournament/$id'
@@ -383,6 +395,7 @@ export interface RootRouteChildren {
   UploadRoute: typeof UploadRoute
   ChatIdRoute: typeof ChatIdRoute
   ChatNewRoute: typeof ChatNewRoute
+  GroupIdRoute: typeof GroupIdRoute
   GroupNewRoute: typeof GroupNewRoute
   MatchIdRoute: typeof MatchIdRoute
   TournamentIdRoute: typeof TournamentIdRoute
@@ -529,6 +542,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ChatNewRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/group/$id': {
+      id: '/group/$id'
+      path: '/group/$id'
+      fullPath: '/group/$id'
+      preLoaderRoute: typeof GroupIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/group/new': {
       id: '/group/new'
       path: '/group/new'
@@ -615,6 +635,7 @@ const rootRouteChildren: RootRouteChildren = {
   UploadRoute: UploadRoute,
   ChatIdRoute: ChatIdRoute,
   ChatNewRoute: ChatNewRoute,
+  GroupIdRoute: GroupIdRoute,
   GroupNewRoute: GroupNewRoute,
   MatchIdRoute: MatchIdRoute,
   TournamentIdRoute: TournamentIdRoute,
