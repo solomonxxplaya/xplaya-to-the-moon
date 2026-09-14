@@ -30,6 +30,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getDb, initFirebase, requireDb } from "@/lib/firebase/config";
 import { getPublicProfile } from "@/lib/firebase/user-service";
+import { areFriends } from "@/lib/friends";
 import type { PublicProfileDoc } from "@/lib/firebase/model";
 import {
   defaultGroupPermissions,
