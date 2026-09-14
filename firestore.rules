@@ -317,6 +317,7 @@ service cloud.firestore {
         || (
           isConvoMember()
           && notSuspended()
+          && addedMembersAreFriends()
           && (
             request.resource.data.diff(convo()).affectedKeys().hasOnly([
               'lastMessage', 'lastMessageSenderId', 'lastMessageAt',
