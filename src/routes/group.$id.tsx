@@ -66,7 +66,7 @@ function GroupSettingsScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [term, setTerm] = useState("");
-  const [results, setResults] = useState<PublicProfileDoc[]>([]);
+  const { data: friends } = useFriends(uid ?? null, term);
 
   useEffect(() => {
     if (conversation) {
@@ -74,19 +74,6 @@ function GroupSettingsScreen() {
       setDescription(conversation.description ?? "");
     }
   }, [conversation?.id, conversation?.name, conversation?.description]);
-
-  useEffect(() => {
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      void searchUsers(term).then((list) => {
-        if (!cancelled) setResults(list);
-      });
-    }, 250);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [term]);
 
   if (!isAuthenticated) {
     return (
