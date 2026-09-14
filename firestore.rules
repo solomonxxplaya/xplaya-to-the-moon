@@ -246,6 +246,32 @@ service cloud.firestore {
 
     match /conversations/{conversationId} {
 
+      // Friendship = a two-way follow. Messaging is friends-only, enforced here
+      // on the server and not only hidden in the app screens.
+      function followsEachOther(a, b) {
+        return exists(/databases/$(database)/documents/follows/$(a + '_' + b))
+          && exists(/databases/$(database)/documents/follows/$(b + '_' + a));
+      }
+
+      function otherPrivateMember() {
+        return request.resource.data.memberIds[0] == request.auth.uid
+          ? request.resource.data.memberIds[1]
+          : request.resource.data.memberIds[0];
+      }
+
+      // Members joining in this update (empty for every non-membership change).
+      function addedMembers() {
+        return request.resource.data.memberIds.removeAll(resource.data.memberIds);
+      }
+
+      // Members may only be added one at a time, and only if they are a friend
+      // of the member performing the update.
+      function addedMembersAreFriends() {
+        return addedMembers().size() == 0
+          || (addedMembers().size() == 1
+              && followsEachOther(request.auth.uid, addedMembers()[0]));
+      }
+
       function convo() {
         return resource.data;
       }
