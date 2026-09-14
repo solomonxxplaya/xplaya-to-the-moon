@@ -30,6 +30,7 @@ import {
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { getDb, initFirebase, requireDb } from "@/lib/firebase/config";
 import { getPublicProfile } from "@/lib/firebase/user-service";
+import { areFriends } from "@/lib/friends";
 import type { PublicProfileDoc } from "@/lib/firebase/model";
 import {
   defaultGroupPermissions,
@@ -217,6 +218,10 @@ export async function openPrivateConversation(me: string, other: string) {
   const ref = doc(db, CONVERSATIONS, id);
   const snap = await getDoc(ref);
   if (!snap.exists()) {
+    // Private chats only exist between friends: both accounts follow each other.
+    if (!(await areFriends(me, other))) {
+      throw new Error("You can only message players who follow each other.");
+    }
     const conversation: ConversationDoc = {
       id,
       type: "private",

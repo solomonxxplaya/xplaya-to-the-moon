@@ -6,8 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/lib/auth-context";
-import { searchUsers } from "@/lib/firebase/user-service";
-import type { PublicProfileDoc } from "@/lib/firebase/model";
+import { useFriends } from "@/lib/friends";
 import {
   canDo,
   defaultGroupPermissions,
@@ -67,7 +66,7 @@ function GroupSettingsScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [term, setTerm] = useState("");
-  const [results, setResults] = useState<PublicProfileDoc[]>([]);
+  const { data: friends } = useFriends(uid ?? null, term);
 
   useEffect(() => {
     if (conversation) {
@@ -75,19 +74,6 @@ function GroupSettingsScreen() {
       setDescription(conversation.description ?? "");
     }
   }, [conversation?.id, conversation?.name, conversation?.description]);
-
-  useEffect(() => {
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      void searchUsers(term).then((list) => {
-        if (!cancelled) setResults(list);
-      });
-    }, 250);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [term]);
 
   if (!isAuthenticated) {
     return (
@@ -326,12 +312,15 @@ function GroupSettingsScreen() {
             <Input
               value={term}
               onChange={(e) => setTerm(e.target.value)}
-              placeholder="Search players"
+              placeholder="Search your friends"
               className="rounded-full pl-9"
             />
           </div>
+          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+            You can only add players who follow each other.
+          </p>
           <ul className="mt-3 space-y-2">
-            {results
+            {friends
               .filter((u) => !conversation.memberIds.includes(u.uid))
               .map((u) => (
                 <li key={u.uid}>

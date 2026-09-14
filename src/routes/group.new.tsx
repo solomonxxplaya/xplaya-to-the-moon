@@ -1,13 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Check, Search, UserRound } from "lucide-react";
 import { Screen } from "@/components/layout/Screen";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/lib/auth-context";
-import { searchUsers } from "@/lib/firebase/user-service";
-import type { PublicProfileDoc } from "@/lib/firebase/model";
+import { useFriends } from "@/lib/friends";
 import { createGroup, useAction } from "@/lib/messaging/service";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
@@ -16,9 +15,9 @@ export const Route = createFileRoute("/group/new")({
   head: () => ({
     meta: [
       { title: "Create group — XPLAYA" },
-      { name: "description", content: "Create an XPLAYA group chat and invite players." },
+      { name: "description", content: "Create an XPLAYA group chat and invite your friends." },
       { property: "og:title", content: "Create group — XPLAYA" },
-      { property: "og:description", content: "Create an XPLAYA group chat and invite players." },
+      { property: "og:description", content: "Create an XPLAYA group chat and invite your friends." },
     ],
   }),
   component: NewGroupScreen,
@@ -30,22 +29,9 @@ function NewGroupScreen() {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [term, setTerm] = useState("");
-  const [results, setResults] = useState<PublicProfileDoc[]>([]);
+  const { data: friends, loading } = useFriends(uid ?? null, term);
   const [selected, setSelected] = useState<string[]>([]);
   const { busy, run } = useAction();
-
-  useEffect(() => {
-    let cancelled = false;
-    const timer = setTimeout(() => {
-      void searchUsers(term).then((list) => {
-        if (!cancelled) setResults(list.filter((u) => u.uid !== uid));
-      });
-    }, 250);
-    return () => {
-      cancelled = true;
-      clearTimeout(timer);
-    };
-  }, [term, uid]);
 
   const toggle = (id: string) =>
     setSelected((prev) => (prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]));
@@ -72,7 +58,7 @@ function NewGroupScreen() {
   };
 
   return (
-    <Screen title="Create group" subtitle="Name it, then add players">
+    <Screen title="Create group" subtitle="Name it, then add friends">
       <div className="space-y-3">
         <Input
           value={name}
@@ -94,13 +80,21 @@ function NewGroupScreen() {
         <Input
           value={term}
           onChange={(e) => setTerm(e.target.value)}
-          placeholder="Search players to add"
+          placeholder="Search your friends"
           className="rounded-full pl-9"
         />
       </div>
 
+      {loading ? (
+        <p className="mt-6 text-center text-sm text-muted-foreground">Loading your friends…</p>
+      ) : friends.length === 0 ? (
+        <p className="mt-6 text-center text-xs leading-relaxed text-muted-foreground">
+          You can only add players who follow each other. Follow someone back to add them here.
+        </p>
+      ) : null}
+
       <ul className="mt-3 space-y-2">
-        {results.map((u) => {
+        {friends.map((u) => {
           const on = selected.includes(u.uid);
           return (
             <li key={u.uid}>

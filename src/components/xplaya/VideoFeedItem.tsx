@@ -227,117 +227,12 @@ export function VideoFeedItem({
 
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/75 via-black/25 to-transparent" />
 
-      {/* Right action rail — large, modern, TikTok-style controls */}
-      <div className="absolute right-1 bottom-[104px] flex flex-col items-center gap-4">
-        <div className="relative mb-4">
-          <Link
-            to="/u/$username"
-            params={{ username: post.creator.username }}
-            aria-label={`Open @${post.creator.username}`}
-          >
-            <img
-              src={post.creator.avatarUrl}
-              alt={post.creator.displayName}
-              loading="lazy"
-              className="h-[52px] w-[52px] rounded-full border-2 border-white/85 bg-surface object-cover"
-            />
-          </Link>
-          {!isSelf && !following ? (
-            <button
-              onClick={() => void toggleFollow()}
-              aria-label={`Follow ${post.creator.username}`}
-              className="neon-ring absolute -bottom-2.5 left-1/2 grid h-7 w-7 -translate-x-1/2 place-items-center rounded-full bg-primary text-primary-foreground"
-            >
-              <Plus className="h-4 w-4" strokeWidth={3} />
-            </button>
-          ) : null}
-        </div>
-
-        <ActionButton
-          label={compactNumber(likes)}
-          ariaLabel={liked ? "Unlike clip" : "Like clip"}
-          active={liked}
-          onClick={() => void toggleLike()}
-        >
-          <Heart
-            className={cn(
-              "h-9 w-9 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)] transition-transform",
-              liked && "fill-neon scale-110",
-            )}
-          />
-        </ActionButton>
-
-        <ActionButton
-          label={compactNumber(comments)}
-          ariaLabel="Open comments"
-          onClick={() => setCommentsOpen(true)}
-        >
-          <MessageCircle className="h-9 w-9 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]" />
-        </ActionButton>
-
-        <ActionButton
-          label={compactNumber(shares)}
-          ariaLabel="Share clip"
-          onClick={() => setShareOpen(true)}
-        >
-          <Share2 className="h-9 w-9 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]" />
-        </ActionButton>
-
-        {/* Owner-only options. Viewers never see this control. */}
-        {isOwner ? (
-          <DropdownMenu open={menuOpen} onOpenChange={setMenuOpen}>
-            <DropdownMenuTrigger asChild>
-              <button
-                aria-label="Your clip options"
-                className="press grid h-12 w-12 place-items-center rounded-full text-foreground"
-              >
-                <MoreVertical className="h-7 w-7 drop-shadow-[0_2px_4px_rgba(0,0,0,0.85)]" />
-              </button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent
-              align="end"
-              side="left"
-              className="w-52 rounded-2xl border-border bg-surface"
-            >
-              <DropdownMenuItem asChild>
-                <Link to="/upload">
-                  <Pencil className="mr-2 h-4 w-4" />
-                  Upload new clip
-                </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => void copyLink()}>
-                <Link2 className="mr-2 h-4 w-4" />
-                Copy link
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => setShareOpen(true)}>
-                <Share2 className="mr-2 h-4 w-4" />
-                Share
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                disabled={deleting}
-                className="text-destructive focus:text-destructive"
-                onSelect={(event) => {
-                  event.preventDefault();
-                  setMenuOpen(false);
-                  void handleDelete();
-                }}
-              >
-                <Trash2 className="mr-2 h-4 w-4" />
-                Delete clip
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-        ) : null}
-
-        {/* Music indicator */}
-        <div className="grid h-11 w-11 place-items-center rounded-full border border-white/15 bg-black/50 backdrop-blur-md">
-          <Music2 className="h-4 w-4 animate-pulse text-neon" />
-        </div>
-      </div>
-
-
+      {/* Bottom stack — clip information, then one centred action row.
+          The row sits just above the bottom navigation on every screen size. */}
+      <div className="safe-bottom absolute inset-x-0 bottom-[76px] px-4">
+      <div className="mx-auto w-full max-w-lg">
       {/* Video information — username, caption, rank, music */}
-      <div className="absolute right-[76px] bottom-[92px] left-4">
+      <div>
         <div className="flex min-w-0 items-center gap-1.5">
           <Link
             to="/u/$username"
