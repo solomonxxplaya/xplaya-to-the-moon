@@ -312,12 +312,15 @@ function GroupSettingsScreen() {
             <Input
               value={term}
               onChange={(e) => setTerm(e.target.value)}
-              placeholder="Search players"
+              placeholder="Search your friends"
               className="rounded-full pl-9"
             />
           </div>
+          <p className="mt-2 text-[11px] leading-relaxed text-muted-foreground">
+            You can only add players who follow each other.
+          </p>
           <ul className="mt-3 space-y-2">
-            {results
+            {friends
               .filter((u) => !conversation.memberIds.includes(u.uid))
               .map((u) => (
                 <li key={u.uid}>
